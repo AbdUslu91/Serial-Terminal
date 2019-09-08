@@ -70,8 +70,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 //! [0]
     m_ui->setupUi(this);
-    m_console->setEnabled(false);
-    setCentralWidget(m_console);
+    //m_console->setEnabled(true);
+    QVBoxLayout *consoleLayout = new QVBoxLayout();
+    consoleLayout->setMargin(0);
+    consoleLayout->addWidget(m_console);
+    m_ui->consoleWidget->setLayout(consoleLayout);
+    
 
     m_ui->actionConnect->setEnabled(true);
     m_ui->actionDisconnect->setEnabled(false);

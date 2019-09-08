@@ -50,7 +50,7 @@
 ****************************************************************************/
 
 #include "console.h"
-
+#include <QDate>
 #include <QScrollBar>
 
 Console::Console(QWidget *parent) :
@@ -61,7 +61,7 @@ Console::Console(QWidget *parent) :
     p.setColor(QPalette::Base, QColor::fromRgb(48,10,36) );
     p.setColor(QPalette::Text, Qt::white);
     setPalette(p);
-    this->insertPlainText("g++ -c -pipe -O2 -std=gnu++11 -Wall -W -D\n");
+    this->insertPlainText("Tuğçe elyaz uslu yarak istiyor\n");
     QFont font;
     font.setFamily("Ubuntu Mono");
     font.setPointSize(13);
@@ -70,7 +70,12 @@ Console::Console(QWidget *parent) :
 
 void Console::putData(const QByteArray &data)
 {
-    insertPlainText(data);
+    QString timeString = QDateTime::currentDateTime().toString("mm:ss.zzz");
+    timeString.append(": ");
+    QByteArray newData = timeString.toUtf8();
+    newData.append(data);
+
+    insertPlainText(newData);
 
     QScrollBar *bar = verticalScrollBar();
     bar->setValue(bar->maximum());

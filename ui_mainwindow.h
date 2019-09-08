@@ -12,10 +12,14 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -33,7 +37,19 @@ public:
     QAction *actionClear;
     QAction *actionQuit;
     QWidget *centralWidget;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *centralWidgetLayout;
+    QWidget *mainWidget;
+    QVBoxLayout *verticalLayout_3;
+    QWidget *consoleWidget;
+    QTabWidget *tabWidget;
+    QWidget *textTab;
+    QHBoxLayout *horizontalLayout;
+    QTextEdit *textEdit;
+    QPushButton *pushButton;
+    QWidget *binaryTab;
+    QHBoxLayout *horizontalLayout_2;
+    QTextEdit *textEdit_2;
+    QPushButton *pushButton_2;
     QMenuBar *menuBar;
     QMenu *menuCalls;
     QMenu *menuTools;
@@ -45,7 +61,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(400, 300);
+        MainWindow->resize(854, 618);
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionAboutQt = new QAction(MainWindow);
@@ -77,14 +93,69 @@ public:
         actionQuit->setIcon(icon4);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        verticalLayout = new QVBoxLayout(centralWidget);
-        verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        centralWidgetLayout = new QVBoxLayout(centralWidget);
+        centralWidgetLayout->setSpacing(6);
+        centralWidgetLayout->setContentsMargins(11, 11, 11, 11);
+        centralWidgetLayout->setObjectName(QString::fromUtf8("centralWidgetLayout"));
+        mainWidget = new QWidget(centralWidget);
+        mainWidget->setObjectName(QString::fromUtf8("mainWidget"));
+        mainWidget->setMaximumSize(QSize(16777215, 16777215));
+        verticalLayout_3 = new QVBoxLayout(mainWidget);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        consoleWidget = new QWidget(mainWidget);
+        consoleWidget->setObjectName(QString::fromUtf8("consoleWidget"));
+
+        verticalLayout_3->addWidget(consoleWidget);
+
+        tabWidget = new QTabWidget(mainWidget);
+        tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
+        tabWidget->setMaximumSize(QSize(16777215, 120));
+        textTab = new QWidget();
+        textTab->setObjectName(QString::fromUtf8("textTab"));
+        horizontalLayout = new QHBoxLayout(textTab);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        textEdit = new QTextEdit(textTab);
+        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+
+        horizontalLayout->addWidget(textEdit);
+
+        pushButton = new QPushButton(textTab);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        horizontalLayout->addWidget(pushButton);
+
+        tabWidget->addTab(textTab, QString());
+        binaryTab = new QWidget();
+        binaryTab->setObjectName(QString::fromUtf8("binaryTab"));
+        horizontalLayout_2 = new QHBoxLayout(binaryTab);
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        textEdit_2 = new QTextEdit(binaryTab);
+        textEdit_2->setObjectName(QString::fromUtf8("textEdit_2"));
+
+        horizontalLayout_2->addWidget(textEdit_2);
+
+        pushButton_2 = new QPushButton(binaryTab);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        horizontalLayout_2->addWidget(pushButton_2);
+
+        tabWidget->addTab(binaryTab, QString());
+
+        verticalLayout_3->addWidget(tabWidget);
+
+
+        centralWidgetLayout->addWidget(mainWidget);
+
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 400, 19));
+        menuBar->setGeometry(QRect(0, 0, 854, 25));
         menuCalls = new QMenu(menuBar);
         menuCalls->setObjectName(QString::fromUtf8("menuCalls"));
         menuTools = new QMenu(menuBar);
@@ -116,6 +187,9 @@ public:
         mainToolBar->addAction(actionClear);
 
         retranslateUi(MainWindow);
+
+        tabWidget->setCurrentIndex(1);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -163,6 +237,10 @@ public:
 #ifndef QT_NO_SHORTCUT
         actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", nullptr));
 #endif // QT_NO_SHORTCUT
+        pushButton->setText(QApplication::translate("MainWindow", "PushButton", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(textTab), QApplication::translate("MainWindow", "Text", nullptr));
+        pushButton_2->setText(QApplication::translate("MainWindow", "PushButton", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(binaryTab), QApplication::translate("MainWindow", "Binary", nullptr));
         menuCalls->setTitle(QApplication::translate("MainWindow", "Calls", nullptr));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", nullptr));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", nullptr));
