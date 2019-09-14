@@ -52,6 +52,7 @@
 #include "console.h"
 #include <QDate>
 #include <QScrollBar>
+#include <QDebug>
 
 Console::Console(QWidget *parent) :
     QPlainTextEdit(parent)
@@ -61,21 +62,83 @@ Console::Console(QWidget *parent) :
     p.setColor(QPalette::Base, QColor::fromRgb(48,10,36) );
     p.setColor(QPalette::Text, Qt::white);
     setPalette(p);
-    this->insertPlainText("Tuğçe elyaz uslu yarak istiyor\n");
     QFont font;
     font.setFamily("Ubuntu Mono");
     font.setPointSize(13);
+    font.setBold(true);
     this->setFont(font);
+    this->insertPlainText("Date: ");
+
+    font.setFamily("Ubuntu Mono");
+    font.setPointSize(13);
+    font.setBold(false);
+    this->setFont(font);
+    this->insertPlainText("Terminal test text");
+
+    QTextCursor cursor = textCursor();
+
+
+    QTextCharFormat charFormat;
+    font.setBold(true);
+    charFormat.setFont(font);
+    charFormat.setForeground( QBrush( QColor( "#6ad534" ) ) );
+    cursor.insertText( " text cursor bold test: ",charFormat);
+
+    font.setBold(false);
+    charFormat.setFont(font);
+    charFormat.setForeground( QBrush( QColor( "white" ) ) );
+    cursor.insertText(" regular test", charFormat);
+   
+    
 }
 
 void Console::putData(const QByteArray &data)
 {
+    QByteArray newData = data;
     QString timeString = QDateTime::currentDateTime().toString("mm:ss.zzz");
     timeString.append(": ");
-    QByteArray newData = timeString.toUtf8();
-    newData.append(data);
 
-    insertPlainText(newData);
+   
+    
+    QTextCursor cursor = textCursor();
+
+     if( QString::compare(this->toPlainText().right(1), "\n", Qt::CaseSensitive) != 0 ){
+         cursor.insertText("\n");
+         qInfo() << "without enter detect";
+     }
+         
+    
+    QTextCharFormat charFormat;
+    QFont font;
+    font.setFamily("Ubuntu Mono");
+    font.setPointSize(13);
+    font.setBold(true);
+    charFormat.setForeground( QBrush( QColor( "#6ad534" ) ) );
+    charFormat.setFont(font);
+
+    cursor.insertText(timeString, charFormat);
+
+    font.setFamily("Ubuntu Mono");
+    font.setPointSize(13);
+    font.setBold(false);
+    charFormat.setForeground( QBrush( QColor( "white" ) ) );
+    charFormat.setFont(font);
+
+    QString spaceData("\n");
+
+    for(int j=0; j< timeString.length(); j++)
+        spaceData.append(" ");
+
+    for(int i=0; i<(newData.length()-1); i++) {
+        if(newData[i] == '\n')
+            newData.replace(i,1,spaceData.toStdString().c_str() );
+    }
+
+
+    //newData.replace('\n', spaceData.toStdString().c_str());
+    
+    cursor.insertText( newData , charFormat); 
+
 
     QScrollBar *bar = verticalScrollBar();
     bar->setValue(bar->maximum());
