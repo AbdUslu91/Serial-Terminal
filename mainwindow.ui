@@ -36,7 +36,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="textTab">
           <attribute name="title">
@@ -47,9 +47,9 @@
             <widget class="QTextEdit" name="textEdit"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="textSendButton">
              <property name="text">
-              <string>PushButton</string>
+              <string>Send</string>
              </property>
             </widget>
            </item>
@@ -109,7 +109,6 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout"/>
-    <addaction name="actionAboutQt"/>
    </widget>
    <addaction name="menuCalls"/>
    <addaction name="menuTools"/>
@@ -126,6 +125,8 @@
    <addaction name="actionDisconnect"/>
    <addaction name="actionConfigure"/>
    <addaction name="actionClear"/>
+   <addaction name="separator"/>
+   <addaction name="actionSet_DTR"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
@@ -214,6 +215,20 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionSet_DTR">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="terminal.qrc">
+     <normaloff>:/images/dtr.png</normaloff>
+     <activeon>:/images/dtrOff.png</activeon>
+     <selectedon>:/images/dtrOff.png</selectedon>:/images/dtr.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set DTR</string>
    </property>
   </action>
  </widget>

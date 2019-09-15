@@ -93,13 +93,21 @@ MainWindow::MainWindow(QWidget *parent) :
 //! [2]
     connect(m_console, &Console::getData, this, &MainWindow::writeData);
 //! [3]
-}
-//! [3]
 
+    connect(m_ui->textSendButton, SIGNAL(clicked()), this, SLOT(textSendButton()) );
+}
+
+
+    
 MainWindow::~MainWindow()
 {
     delete m_settings;
     delete m_ui;
+}
+
+void MainWindow::textSendButton() 
+{
+    m_console->putTransmitData( m_ui->textEdit->toPlainText().toLocal8Bit() );
 }
 
 //! [4]
@@ -112,7 +120,9 @@ void MainWindow::openSerialPort()
     m_serial->setParity(p.parity);
     m_serial->setStopBits(p.stopBits);
     m_serial->setFlowControl(p.flowControl);
+    m_serial->setDataTerminalReady(false);
     if (m_serial->open(QIODevice::ReadWrite)) {
+        m_serial->setDataTerminalReady(false);
         m_console->setEnabled(true);
         m_console->setLocalEchoEnabled(p.localEchoEnabled);
         m_ui->actionConnect->setEnabled(false);
@@ -142,6 +152,21 @@ void MainWindow::closeSerialPort()
 }
 //! [5]
 
+void MainWindow::setDTR() 
+{
+    qDebug() << "dtr set";
+    
+    if( m_ui->actionSet_DTR->isChecked() ) {
+        qDebug() << "set dtr low";
+        m_serial->setDataTerminalReady(true);
+    }   
+    else {
+        qDebug() << "set dtr high";
+        m_serial->setDataTerminalReady(false);
+    }
+        
+}
+
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Simple Terminal"),
@@ -161,7 +186,7 @@ void MainWindow::writeData(const QByteArray &data)
 void MainWindow::readData()
 {
     const QByteArray data = m_serial->readAll();
-    m_console->putData(data);
+    m_console->putReceiveData(data);
 }
 //! [7]
 
@@ -184,6 +209,8 @@ void MainWindow::initActionsConnections()
     connect(m_ui->actionClear, &QAction::triggered, m_console, &Console::clear);
     connect(m_ui->actionAbout, &QAction::triggered, this, &MainWindow::about);
     connect(m_ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
+    connect(m_ui->actionSet_DTR, &QAction::triggered,this,&MainWindow::setDTR);
+
 }
 
 void MainWindow::showStatusMessage(const QString &message)

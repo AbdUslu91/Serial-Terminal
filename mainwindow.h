@@ -54,6 +54,7 @@
 
 #include <QMainWindow>
 #include <QSerialPort>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 
@@ -82,6 +83,8 @@ private slots:
     void about();
     void writeData(const QByteArray &data);
     void readData();
+    void textSendButton();
+    void setDTR();
 
     void handleError(QSerialPort::SerialPortError error);
 

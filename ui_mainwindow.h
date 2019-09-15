@@ -36,6 +36,7 @@ public:
     QAction *actionConfigure;
     QAction *actionClear;
     QAction *actionQuit;
+    QAction *actionSet_DTR;
     QWidget *centralWidget;
     QVBoxLayout *centralWidgetLayout;
     QWidget *mainWidget;
@@ -45,7 +46,7 @@ public:
     QWidget *textTab;
     QHBoxLayout *horizontalLayout;
     QTextEdit *textEdit;
-    QPushButton *pushButton;
+    QPushButton *textSendButton;
     QWidget *binaryTab;
     QHBoxLayout *horizontalLayout_2;
     QTextEdit *textEdit_2;
@@ -91,6 +92,14 @@ public:
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/images/application-exit.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionQuit->setIcon(icon4);
+        actionSet_DTR = new QAction(MainWindow);
+        actionSet_DTR->setObjectName(QString::fromUtf8("actionSet_DTR"));
+        actionSet_DTR->setCheckable(true);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/images/dtr.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon5.addFile(QString::fromUtf8(":/images/dtrOff.png"), QSize(), QIcon::Active, QIcon::On);
+        icon5.addFile(QString::fromUtf8(":/images/dtrOff.png"), QSize(), QIcon::Selected, QIcon::On);
+        actionSet_DTR->setIcon(icon5);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         centralWidgetLayout = new QVBoxLayout(centralWidget);
@@ -123,10 +132,10 @@ public:
 
         horizontalLayout->addWidget(textEdit);
 
-        pushButton = new QPushButton(textTab);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        textSendButton = new QPushButton(textTab);
+        textSendButton->setObjectName(QString::fromUtf8("textSendButton"));
 
-        horizontalLayout->addWidget(pushButton);
+        horizontalLayout->addWidget(textSendButton);
 
         tabWidget->addTab(textTab, QString());
         binaryTab = new QWidget();
@@ -180,15 +189,16 @@ public:
         menuTools->addAction(actionConfigure);
         menuTools->addAction(actionClear);
         menuHelp->addAction(actionAbout);
-        menuHelp->addAction(actionAboutQt);
         mainToolBar->addAction(actionConnect);
         mainToolBar->addAction(actionDisconnect);
         mainToolBar->addAction(actionConfigure);
         mainToolBar->addAction(actionClear);
+        mainToolBar->addSeparator();
+        mainToolBar->addAction(actionSet_DTR);
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -237,7 +247,8 @@ public:
 #ifndef QT_NO_SHORTCUT
         actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", nullptr));
 #endif // QT_NO_SHORTCUT
-        pushButton->setText(QApplication::translate("MainWindow", "PushButton", nullptr));
+        actionSet_DTR->setText(QApplication::translate("MainWindow", "Set DTR", nullptr));
+        textSendButton->setText(QApplication::translate("MainWindow", "Send", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(textTab), QApplication::translate("MainWindow", "Text", nullptr));
         pushButton_2->setText(QApplication::translate("MainWindow", "PushButton", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(binaryTab), QApplication::translate("MainWindow", "Binary", nullptr));
