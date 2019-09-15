@@ -92,7 +92,38 @@ Console::Console(QWidget *parent) :
     
 }
 
-void Console::putData(const QByteArray &data)
+void Console::putTransmitData(QByteArray data) 
+{
+    QString timeString = QDateTime::currentDateTime().toString("mm:ss.zzz");
+    timeString.append(": ");
+
+    QTextCursor cursor = textCursor();
+    QTextCharFormat charFormat;
+    QFont font;
+    font.setFamily("Ubuntu Mono");
+    font.setPointSize(13);
+    font.setBold(true);
+    charFormat.setForeground( QBrush( QColor( "#5b96cf" ) ) );
+    charFormat.setFont(font);
+
+    cursor.insertText(timeString, charFormat);
+
+    font.setFamily("Ubuntu Mono");
+    font.setPointSize(13);
+    font.setBold(false);
+    charFormat.setForeground( QBrush( QColor( "white" ) ) );
+    charFormat.setFont(font); 
+    
+    data.append("\n");
+    cursor.insertText( data , charFormat);
+
+    emit getData(data);
+
+    QScrollBar *bar = verticalScrollBar();
+    bar->setValue(bar->maximum());   
+}
+
+void Console::putReceiveData(const QByteArray &data)
 {
     QByteArray newData = data;
     QString timeString = QDateTime::currentDateTime().toString("mm:ss.zzz");
@@ -133,10 +164,7 @@ void Console::putData(const QByteArray &data)
         if(newData[i] == '\n')
             newData.replace(i,1,spaceData.toStdString().c_str() );
     }
-
-
-    //newData.replace('\n', spaceData.toStdString().c_str());
-    
+  
     cursor.insertText( newData , charFormat); 
 
 
